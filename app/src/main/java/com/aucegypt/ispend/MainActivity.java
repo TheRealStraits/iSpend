@@ -4,10 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,15 +19,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView bottomNavigation = findViewById(R.id.bottomNav);
+        BottomNavigationView bottomNavigation = (BottomNavigationView) findViewById(R.id.bottomNav);
         bottomNavigation.setOnNavigationItemSelectedListener(navListener);
+
+        if (savedInstanceState == null) {
+            bottomNavigation.setSelectedItemId(R.id.homeFragment);
+        }
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment = null;
+
+                    Fragment selectedFragment = new homeFragment();
 
                     switch (item.getItemId())
                     {
