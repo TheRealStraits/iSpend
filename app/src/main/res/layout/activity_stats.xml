@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StatsActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#DDDDDD"
+        android:layout_alignParentTop="true"
+/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:background="#DDDDDD"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="420dp"
+        />
+
+    <ViewFlipper
+        android:id="@+id/myViewFlipper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:inAnimation="@android:anim/slide_out_right"
+        android:outAnimation="@android:anim/slide_in_left">
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barchart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="100dp"
+            android:layout_alignParentLeft="true" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/linechart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="100dp"
+            android:layout_alignParentLeft="true" />
+
+    </ViewFlipper>
+
+    <Button
+        android:id="@+id/weekly"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="14dp"
+        android:backgroundTint="@color/apptheme"
+        android:text="Weekly"
+        />
+
+    <Button
+        android:id="@+id/monthly"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="14dp"
+        android:backgroundTint="@color/apptheme"
+        android:text="Monthly"
+        />
+    <TextView
+        android:id="@+id/total_expense"
+        android:layout_width="180dp"
+        android:layout_height="30dp"
+        android:text="Total Expenditures"
+        android:textSize="8pt"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="200dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"
+        />
+
+    <TextView
+        android:id="@+id/expense_num"
+        android:layout_width="90dp"
+        android:layout_height="30dp"
+        android:text="-$95.62"
+        android:textSize="8pt"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="180dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="20dp"
+        android:textColor="#FF3D3D"
+        />
+
+    <TextView
+        android:id="@+id/total_saved"
+        android:layout_width="180dp"
+        android:layout_height="30dp"
+        android:text="Total Savings"
+        android:textSize="8pt"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="120dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"
+        />
+
+    <TextView
+        android:id="@+id/save_num"
+        android:layout_width="90dp"
+        android:layout_height="30dp"
+        android:text="+$18.50"
+        android:textSize="8pt"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="20dp"
+        android:textColor="@color/apptheme"
+        />
+
+    <TextView
+        android:id="@+id/net_balance"
+        android:layout_width="180dp"
+        android:layout_height="30dp"
+        android:text="Net Balance"
+        android:textSize="8pt"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"
+        />
+
+    <TextView
+        android:id="@+id/net_num"
+        android:layout_width="90dp"
+        android:layout_height="30dp"
+        android:text="-$77.12"
+        android:textSize="8pt"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="20dp"
+        android:textColor="#FF3D3D"
+        />
+
+    <TextView
+    android:id="@+id/type1"
+    android:layout_width="180dp"
+    android:layout_height="30dp"
+    android:text="this week:"
+    android:textSize="6pt"
+    android:layout_alignParentBottom="true"
+    android:layout_marginBottom="170dp"
+    android:layout_alignParentLeft="true"
+    android:layout_marginLeft="20dp"
+    />
+
+    <TextView
+        android:id="@+id/type2"
+        android:layout_width="180dp"
+        android:layout_height="30dp"
+        android:text="this week:"
+        android:textSize="6pt"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="90dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"
+        />
+
+    <TextView
+        android:id="@+id/type3"
+        android:layout_width="180dp"
+        android:layout_height="30dp"
+        android:text="this week:"
+        android:textSize="6pt"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"
+        />
+
+
+
+</android.widget.RelativeLayout>

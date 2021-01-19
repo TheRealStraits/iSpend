@@ -1,5 +1,6 @@
 package com.aucegypt.ispend;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,10 @@ public class statsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_stats, container, false);
+
+        Intent intent = new Intent(getActivity(), StatsActivity.class);
+        startActivity(intent);
+
+        return inflater.inflate(R.layout.loading_animation, container, false);
     }
 }
