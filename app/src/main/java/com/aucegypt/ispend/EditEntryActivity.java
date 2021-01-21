@@ -3,7 +3,6 @@ package com.aucegypt.ispend;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.icu.text.TimeZoneFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -23,13 +22,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
-public class AddEntryActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+import static java.lang.Math.abs;
 
-    private EntryItem newItem;
+public class EditEntryActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+
+    private EntryItem editedItem;
+    private int itemID = 0;
     private String title = new String();
     private String date = new String();
     private String time = new String();
@@ -42,7 +42,7 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_entry_activity);
+        setContentView(R.layout.edit_entry_activity);
 
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.payMethod, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -54,15 +54,29 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
         EditText notesText = findViewById(R.id.editNotes);
         EditText storeText = findViewById(R.id.editStore);
 
+        Bundle extras = getIntent().getExtras();
+        itemID = extras.getInt("entryID");
+
+        EntryDBHelper entryDBHelper = new EntryDBHelper(getApplicationContext());
+        editedItem = entryDBHelper.getEntryWithID(itemID);
+
+        titleText.setText(editedItem.getTitle());
+        dateText.setText(editedItem.getDate());
+        timeText.setText(editedItem.getTime());
+        notesText.setText(editedItem.getNotes());
+        storeText.setText(editedItem.getStore());
+        valueText.setText(String.valueOf(abs(editedItem.getValue())));
+
         ToggleButton toggleExp = findViewById(R.id.toggleExpSave);
         toggleExp.setGravity(Gravity.LEFT);
         toggleExp.setPadding(0, 0, 0, 0);
 
         Spinner spinner = findViewById(R.id.spinner);
-        Button addButton = findViewById(R.id.addButton);
+        Button submitButton = findViewById(R.id.submitButton);
         Button cancelButton = findViewById(R.id.cancelButton);
-        Button pickDate = findViewById(R.id.pickDate);
-        Button pickTime = findViewById(R.id.pickTime);
+        Button deleteButton = findViewById(R.id.deleteEntryButton);
+        Button pickDate = findViewById(R.id.pickDateEdit);
+        Button pickTime = findViewById(R.id.pickTimeEdit);
 
         //pickTime click listener
         pickTime.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +97,12 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
             }
         });
 
-        //Expense/Save Toggle Button click listener
+        if (editedItem.getValue() > 0)
+            toggleExp.setChecked(true);
+        else
+            toggleExp.setChecked(false);
+
+        //Expense/Save toggle listener
         toggleExp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,18 +112,16 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
                 else {
                     expSave = "save";
                 }
-                Log.d("toggle", expSave);
             }
         });
 
-        //Payment method Spinner adapter and listener
+        //Spinner adapter and listener
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String text = parent.getItemAtPosition(position).toString();
                 method = text;
-                Log.d("method", method);
             }
 
             @Override
@@ -113,8 +130,8 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
             }
         });
 
-        //Add entry button listener
-        addButton.setOnClickListener(new View.OnClickListener() {
+        //submit button listener
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 title = titleText.getText().toString();
@@ -124,19 +141,27 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
                 time = timeText.getText().toString();
                 store = storeText.getText().toString();
 
-                EntryDBHelper entryDBHelper = new EntryDBHelper(getApplicationContext());
-                newItem = new EntryItem(title, notes, date, time, method, Double.parseDouble(value), expSave, store);
-                entryDBHelper.addEntry(newItem);
+                editedItem = new EntryItem(title, notes, date, time, method, Double.parseDouble(value), expSave, store);
+                entryDBHelper.updateEntryWithID(editedItem, itemID);
 
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
             }
         });
 
-        //cancel entry button listener
+        //cancel button listener
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
+        });
+
+        //delete button listener
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                entryDBHelper.deleteEntryWithID(itemID);
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
@@ -166,4 +191,5 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
         TextView textView = findViewById(R.id.editTime);
         textView.setText(currentTime);
     }
+
 }

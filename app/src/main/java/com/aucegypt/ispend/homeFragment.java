@@ -2,6 +2,7 @@ package com.aucegypt.ispend;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ public class homeFragment extends Fragment {
 
     private ArrayList<EntryItem> entryList;
     private RecyclerView recyclerView;
+    private entryRecyclerAdapter.entryRecyclerViewClickListener listener;
 
     @Nullable
     @Override
@@ -31,6 +33,9 @@ public class homeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.entryRecyclerView);
         entryList = new ArrayList<>();
 
+        EntryDBHelper entryDBHelper = new EntryDBHelper(view.getContext());
+        entryList = entryDBHelper.getAllEntries();
+
         FloatingActionButton fab = view.findViewById(R.id.fabAddEntry);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,27 +44,30 @@ public class homeFragment extends Fragment {
             }
         });
 
-        setUserInfo();
         setAdapter(view);
 
         return view;
     }
 
-    private void setUserInfo()
-    {
-        entryList.add(new EntryItem("Groceries", "Grocery shopping for the first week",
-                "21 Jan, 2021 at 09:56 AM", "Cash", 25.62, "exp"));
-        entryList.add(new EntryItem("Fuel", "Fuel refill for Mum's car",
-                "21 Jan, 2021 at 11:50 AM", "Credit Card", 40.02, "save"));
-
-    }
-
     private void setAdapter(View view)
     {
-        entryRecyclerAdapter adapter = new entryRecyclerAdapter(entryList);
+        setOnClickListener(view);
+        entryRecyclerAdapter adapter = new entryRecyclerAdapter(entryList, listener);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+    }
+
+    private void setOnClickListener(View view) {
+        listener = new entryRecyclerAdapter.entryRecyclerViewClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                Intent intent = new Intent(view.getContext(), EditEntryActivity.class);
+                int selectedId = entryList.get(position).getId();
+                intent.putExtra("entryID", selectedId);
+                startActivity(intent);
+            }
+        };
     }
 }
