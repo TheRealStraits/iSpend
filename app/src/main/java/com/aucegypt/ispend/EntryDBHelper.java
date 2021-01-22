@@ -136,6 +136,36 @@ public class EntryDBHelper extends SQLiteOpenHelper {
         return entry;
     }
 
+    public ArrayList<EntryItem> getEntryWithDate(String date)
+    {
+        ArrayList<EntryItem> entryList = new ArrayList<>();
+
+        db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM " + EntriesTable.TABLE_NAME + " WHERE " + EntriesTable.COLUMN_DATES + " = '" + date + "'", null);
+        if (c.moveToFirst())
+        {
+            do {
+                EntryItem entry = new EntryItem();
+                entry.setId(c.getInt(c.getColumnIndex(EntriesTable._ID)));
+                entry.setTitle(c.getString(c.getColumnIndex(EntriesTable.COLUMN_TITLE)));
+                entry.setNotes(c.getString(c.getColumnIndex(EntriesTable.COLUMN_NOTES)));
+                entry.setDate(c.getString(c.getColumnIndex(EntriesTable.COLUMN_DATE)));
+                entry.setTime(c.getString(c.getColumnIndex(EntriesTable.COLUMN_TIME)));
+                entry.setMethod(c.getString(c.getColumnIndex(EntriesTable.COLUMN_METHOD)));
+                entry.setValue(c.getDouble(c.getColumnIndex(EntriesTable.COLUMN_VALUE)));
+                entry.setExpSav(c.getString(c.getColumnIndex(EntriesTable.COLUMN_EXPSAV)));
+                entry.setStore(c.getString(c.getColumnIndex(EntriesTable.COLUMN_STORE)));
+                entry.setDateForm(c.getString(c.getColumnIndex(EntriesTable.COLUMN_DATES)));
+
+                entryList.add(entry);
+
+            } while (c.moveToNext());
+        }
+
+        c.close();
+        return entryList;
+    }
+
     public boolean updateEntryWithID(EntryItem entryItem, int id)
     {
         db = getWritableDatabase();
@@ -160,6 +190,36 @@ public class EntryDBHelper extends SQLiteOpenHelper {
         db = getWritableDatabase();
         db.delete(EntriesTable.TABLE_NAME, EntriesTable._ID +" = ?", new String[]{String.valueOf(id)});
         return true;
+    }
+
+    public ArrayList<EntryItem> getEntriesFromLastWeek()
+    {
+        ArrayList<EntryItem> entryList = new ArrayList<>();
+
+        db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM " + EntriesTable.TABLE_NAME + " WHERE " + EntriesTable.COLUMN_DATES + "> (SELECT DATETIME('now', '-7 day'))", null);
+        if (c.moveToFirst())
+        {
+            do {
+                EntryItem entry = new EntryItem();
+                entry.setId(c.getInt(c.getColumnIndex(EntriesTable._ID)));
+                entry.setTitle(c.getString(c.getColumnIndex(EntriesTable.COLUMN_TITLE)));
+                entry.setNotes(c.getString(c.getColumnIndex(EntriesTable.COLUMN_NOTES)));
+                entry.setDate(c.getString(c.getColumnIndex(EntriesTable.COLUMN_DATE)));
+                entry.setTime(c.getString(c.getColumnIndex(EntriesTable.COLUMN_TIME)));
+                entry.setMethod(c.getString(c.getColumnIndex(EntriesTable.COLUMN_METHOD)));
+                entry.setValue(c.getDouble(c.getColumnIndex(EntriesTable.COLUMN_VALUE)));
+                entry.setExpSav(c.getString(c.getColumnIndex(EntriesTable.COLUMN_EXPSAV)));
+                entry.setStore(c.getString(c.getColumnIndex(EntriesTable.COLUMN_STORE)));
+                entry.setDateForm(c.getString(c.getColumnIndex(EntriesTable.COLUMN_DATES)));
+
+                entryList.add(entry);
+
+            } while (c.moveToNext());
+        }
+
+        c.close();
+        return entryList;
     }
 
 }
