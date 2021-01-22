@@ -37,7 +37,8 @@ public class EntryDBHelper extends SQLiteOpenHelper {
                 EntriesTable.COLUMN_METHOD + " TEXT DEFAULT 'CASH', " +
                 EntriesTable.COLUMN_VALUE + " DOUBLE, " +
                 EntriesTable.COLUMN_EXPSAV + " TEXT, " +
-                EntriesTable.COLUMN_STORE + " TEXT"
+                EntriesTable.COLUMN_STORE + " TEXT, " +
+                EntriesTable.COLUMN_DATES + " DATE DEFAULT CURRENT_DATE"
                 +" )";
 
         db.execSQL(SQL_CREATE_ENTRIES_TABLE);
@@ -52,7 +53,7 @@ public class EntryDBHelper extends SQLiteOpenHelper {
 
     private void fillEntriesTable()
     {
-        EntryItem entry = new EntryItem("Grocery Shopping", "This week's groceries", "21 Jan, 2021", "17:32", "Cash", 23.84, "exp", "Real");
+        EntryItem entry = new EntryItem("Grocery Shopping", "This week's groceries", "21 Jan, 2021", "17:32", "Cash", 23.84, "exp", "Real", "2021-01-21");
         insertEntry(entry);
     }
 
@@ -73,6 +74,7 @@ public class EntryDBHelper extends SQLiteOpenHelper {
         cv.put(EntriesTable.COLUMN_VALUE, entryItem.getValue());
         cv.put(EntriesTable.COLUMN_EXPSAV, entryItem.getExpSav());
         cv.put(EntriesTable.COLUMN_STORE, entryItem.getStore());
+        cv.put(EntriesTable.COLUMN_DATES, entryItem.getDateForm());
 
         db.insert(EntriesTable.TABLE_NAME, null, cv);
     }
@@ -96,6 +98,7 @@ public class EntryDBHelper extends SQLiteOpenHelper {
                 entry.setValue(c.getDouble(c.getColumnIndex(EntriesTable.COLUMN_VALUE)));
                 entry.setExpSav(c.getString(c.getColumnIndex(EntriesTable.COLUMN_EXPSAV)));
                 entry.setStore(c.getString(c.getColumnIndex(EntriesTable.COLUMN_STORE)));
+                entry.setDateForm(c.getString(c.getColumnIndex(EntriesTable.COLUMN_DATES)));
 
                 entryList.add(entry);
 
@@ -124,6 +127,7 @@ public class EntryDBHelper extends SQLiteOpenHelper {
                 entry.setValue(c.getDouble(c.getColumnIndex(EntriesTable.COLUMN_VALUE)));
                 entry.setExpSav(c.getString(c.getColumnIndex(EntriesTable.COLUMN_EXPSAV)));
                 entry.setStore(c.getString(c.getColumnIndex(EntriesTable.COLUMN_STORE)));
+                entry.setDateForm(c.getString(c.getColumnIndex(EntriesTable.COLUMN_DATES)));
 
             } while (c.moveToNext());
         }
@@ -145,6 +149,7 @@ public class EntryDBHelper extends SQLiteOpenHelper {
         cv.put(EntriesTable.COLUMN_VALUE, entryItem.getValue());
         cv.put(EntriesTable.COLUMN_EXPSAV, entryItem.getExpSav());
         cv.put(EntriesTable.COLUMN_STORE, entryItem.getStore());
+        cv.put(EntriesTable.COLUMN_DATES, entryItem.getDateForm());
 
         db.update(EntriesTable.TABLE_NAME, cv, EntriesTable._ID +" = ?", new String[]{String.valueOf(id)});
         return true;
