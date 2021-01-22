@@ -175,7 +175,7 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
         String mDay = date.substring(0, date.indexOf(','));
         String temp = date.substring(mDay.length() + 1);
         String mDate = temp.substring(0, temp.indexOf(','));
-        String mYear = temp.substring(mDate.length() + 1);
+        String mYear = temp.substring(mDate.length() + 2);
 
         int here = 0;
         String result = mYear + "-";
@@ -219,6 +219,7 @@ public class AddEntryActivity extends AppCompatActivity implements DatePickerDia
             mDay = "0" + mDay;
 
         result = result + mmMonth + "-" + mDay;
+        Log.d("day", result);
 
         return result;
 
