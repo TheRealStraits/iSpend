@@ -141,7 +141,10 @@ public class EditEntryActivity extends AppCompatActivity implements DatePickerDi
                 time = timeText.getText().toString();
                 store = storeText.getText().toString();
 
-                editedItem = new EntryItem(title, notes, date, time, method, Double.parseDouble(value), expSave, store);
+                //Parser goes here
+                String dates = parseDate(date);
+
+                editedItem = new EntryItem(title, notes, date, time, method, Double.parseDouble(value), expSave, store, dates);
                 entryDBHelper.updateEntryWithID(editedItem, itemID);
 
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -192,4 +195,58 @@ public class EditEntryActivity extends AppCompatActivity implements DatePickerDi
         textView.setText(currentTime);
     }
 
+    //Parse Dates from android format to SQLite format
+    private String parseDate(String date)
+    {
+        String mDay = date.substring(0, date.indexOf(','));
+        String temp = date.substring(mDay.length() + 1);
+        String mDate = temp.substring(0, temp.indexOf(','));
+        String mYear = temp.substring(mDate.length() + 1);
+
+        int here = 0;
+        String result = mYear + "-";
+        for (int i = 0; i < mDate.length(); i++)
+            if (mDate.charAt(i) == ' ')
+                here = i;
+
+        String mMonth = mDate.substring(0, here);
+
+        String mmMonth = new String();
+        switch (mMonth)
+        {
+            case " January": mmMonth = "01";
+                break;
+            case " February": mmMonth = "02";
+                break;
+            case " March": mmMonth = "03";
+                break;
+            case " April": mmMonth = "04";
+                break;
+            case " May": mmMonth = "05";
+                break;
+            case " June": mmMonth = "06";
+                break;
+            case " July": mmMonth = "07";
+                break;
+            case " August": mmMonth = "08";
+                break;
+            case " September": mmMonth = "09";
+                break;
+            case " October": mmMonth = "10";
+                break;
+            case " November": mmMonth = "11";
+                break;
+            case " December": mmMonth = "12";
+                break;
+        }
+
+        mDay = mDate.substring(mMonth.length() + 1);
+        if (mDay.length() == 1)
+            mDay = "0" + mDay;
+
+        result = result + mmMonth + "-" + mDay;
+
+        return result;
+
+    }
 }

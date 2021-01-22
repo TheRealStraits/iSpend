@@ -11,10 +11,11 @@ public class EntryItem {
     private double value;
     private String expSav;
     private String store;
+    private String dateForm;
 
     public EntryItem() {}
 
-    public EntryItem(int id, String title, String notes, String date, String time, String method, double value, String expSav, String store) {
+    public EntryItem(int id, String title, String notes, String date, String time, String method, double value, String expSav, String store, String dateForm) {
         this.id = id;
         this.title = title;
         this.notes = notes;
@@ -24,9 +25,10 @@ public class EntryItem {
         this.value = value;
         this.expSav = expSav;
         this.store = store;
+        this.dateForm = dateForm;
     }
 
-    public EntryItem(String title, String notes, String date, String time, String method, double value, String expSav, String store) {
+    public EntryItem(String title, String notes, String date, String time, String method, double value, String expSav, String store, String dateForm) {
         this.title = title;
         this.notes = notes;
         this.date = date;
@@ -35,6 +37,7 @@ public class EntryItem {
         this.value = value;
         this.expSav = expSav;
         this.store = store;
+        this.dateForm = dateForm;
     }
 
     public int getId() {
@@ -108,4 +111,8 @@ public class EntryItem {
     public void setStore(String store) {
         this.store = store;
     }
+
+    public String getDateForm() { return dateForm; }
+
+    public void setDateForm(String dateForm) { this.dateForm = dateForm; }
 }
