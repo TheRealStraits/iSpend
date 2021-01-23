@@ -106,6 +106,7 @@ public class homeFragment extends Fragment {
             }
         });
 
+        //Filter results button
         Button filter = view.findViewById(R.id.filter);
         filter.setOnClickListener(new View.OnClickListener()
         {
@@ -118,6 +119,15 @@ public class homeFragment extends Fragment {
             }
         });
 
+        //Add receipt button
+        Button addReceipt = view.findViewById(R.id.addReceipt);
+        addReceipt.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(view.getContext(), OCRActivity.class));
+            }
+        });
 
         FloatingActionButton fab = view.findViewById(R.id.fabAddEntry);
         fab.setOnClickListener(new View.OnClickListener() {
