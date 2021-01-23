@@ -38,7 +38,8 @@ public class EntryDBHelper extends SQLiteOpenHelper {
                 EntriesTable.COLUMN_VALUE + " DOUBLE, " +
                 EntriesTable.COLUMN_EXPSAV + " TEXT, " +
                 EntriesTable.COLUMN_STORE + " TEXT, " +
-                EntriesTable.COLUMN_DATES + " DATE DEFAULT CURRENT_DATE"
+                EntriesTable.COLUMN_DATES + " DATE DEFAULT CURRENT_DATE, " +
+                EntriesTable.COLUMN_ITEMS + " TEXT"
                 +" )";
 
         db.execSQL(SQL_CREATE_ENTRIES_TABLE);
@@ -166,6 +167,32 @@ public class EntryDBHelper extends SQLiteOpenHelper {
         return entryList;
     }
 
+    public EntryItem getEntryWithTitleDate(String title, String date)
+    {
+        EntryItem entry = new EntryItem();
+        db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM " + EntriesTable.TABLE_NAME + " WHERE " + EntriesTable.COLUMN_DATES + " = '" + date + "'" + " AND " + EntriesTable.COLUMN_TITLE + " = '" + title + "'", null);
+        if (c.moveToFirst())
+        {
+            do {
+                entry.setId(c.getInt(c.getColumnIndex(EntriesTable._ID)));
+                entry.setTitle(c.getString(c.getColumnIndex(EntriesTable.COLUMN_TITLE)));
+                entry.setNotes(c.getString(c.getColumnIndex(EntriesTable.COLUMN_NOTES)));
+                entry.setDate(c.getString(c.getColumnIndex(EntriesTable.COLUMN_DATE)));
+                entry.setTime(c.getString(c.getColumnIndex(EntriesTable.COLUMN_TIME)));
+                entry.setMethod(c.getString(c.getColumnIndex(EntriesTable.COLUMN_METHOD)));
+                entry.setValue(c.getDouble(c.getColumnIndex(EntriesTable.COLUMN_VALUE)));
+                entry.setExpSav(c.getString(c.getColumnIndex(EntriesTable.COLUMN_EXPSAV)));
+                entry.setStore(c.getString(c.getColumnIndex(EntriesTable.COLUMN_STORE)));
+                entry.setDateForm(c.getString(c.getColumnIndex(EntriesTable.COLUMN_DATES)));
+
+            } while (c.moveToNext());
+        }
+
+        c.close();
+        return entry;
+    }
+
     public boolean updateEntryWithID(EntryItem entryItem, int id)
     {
         db = getWritableDatabase();
@@ -185,6 +212,26 @@ public class EntryDBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean updateEntryWithItems(EntryItem entryItem, int id)
+    {
+        db = getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(EntriesTable.COLUMN_TITLE, entryItem.getTitle());
+        cv.put(EntriesTable.COLUMN_NOTES, entryItem.getNotes());
+        cv.put(EntriesTable.COLUMN_DATE, entryItem.getDate());
+        cv.put(EntriesTable.COLUMN_TIME, entryItem.getTime());
+        cv.put(EntriesTable.COLUMN_METHOD, entryItem.getMethod());
+        cv.put(EntriesTable.COLUMN_VALUE, entryItem.getValue());
+        cv.put(EntriesTable.COLUMN_EXPSAV, entryItem.getExpSav());
+        cv.put(EntriesTable.COLUMN_STORE, entryItem.getStore());
+        cv.put(EntriesTable.COLUMN_DATES, entryItem.getDateForm());
+        cv.put(EntriesTable.COLUMN_ITEMS, entryItem.getItems());
+
+        db.update(EntriesTable.TABLE_NAME, cv, EntriesTable._ID +" = ?", new String[]{String.valueOf(id)});
+        return true;
+    }
+
     public boolean deleteEntryWithID(int id)
     {
         db = getWritableDatabase();
@@ -197,7 +244,7 @@ public class EntryDBHelper extends SQLiteOpenHelper {
         ArrayList<EntryItem> entryList = new ArrayList<>();
 
         db = getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM " + EntriesTable.TABLE_NAME + " WHERE " + EntriesTable.COLUMN_DATES + "> (SELECT DATETIME('now', '-7 day'))", null);
+        Cursor c = db.rawQuery("SELECT * FROM " + EntriesTable.TABLE_NAME + " WHERE " + EntriesTable.COLUMN_DATES + " BETWEEN GETDATE() AND Date_SUB(GateDate(),Interval + '7' + DAY) ", null);
         if (c.moveToFirst())
         {
             do {

@@ -18,5 +18,6 @@ public final class AppContract {
         public static final String COLUMN_EXPSAV = "expsav";
         public static final String COLUMN_STORE = "store";
         public static final String COLUMN_DATES = "dates";
+        public static final String COLUMN_ITEMS = "itemList";
     }
 }

@@ -11,7 +11,7 @@
         android:layout_height="60dp"
         android:background="#DDDDDD"
         android:layout_alignParentTop="true"
-/>
+        />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -96,13 +96,15 @@
 
     <TextView
         android:id="@+id/expense_num"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="30dp"
         android:textSize="8pt"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="220dp"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="20dp"
+        android:textAlignment="textEnd"
+        android:gravity="end"
+        android:layout_marginRight="20dp"
         android:textColor="#FF3D3D"
         />
 
@@ -120,13 +122,15 @@
 
     <TextView
         android:id="@+id/save_num"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="30dp"
         android:textSize="8pt"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="140dp"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="20dp"
+        android:textAlignment="textEnd"
+        android:gravity="end"
+        android:layout_marginRight="20dp"
         android:textColor="@color/appTheme"
         />
 
@@ -144,27 +148,29 @@
 
     <TextView
         android:id="@+id/net_num"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="30dp"
         android:textSize="8pt"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="60dp"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="20dp"
+        android:textAlignment="textEnd"
+        android:gravity="end"
+        android:layout_marginRight="20dp"
         android:textColor="#FF3D3D"
         />
 
     <TextView
-    android:id="@+id/type1"
-    android:layout_width="180dp"
-    android:layout_height="30dp"
-    android:text="this week:"
-    android:textSize="6pt"
-    android:layout_alignParentBottom="true"
-    android:layout_marginBottom="210dp"
-    android:layout_alignParentLeft="true"
-    android:layout_marginLeft="20dp"
-    />
+        android:id="@+id/type1"
+        android:layout_width="180dp"
+        android:layout_height="30dp"
+        android:text="this week:"
+        android:textSize="6pt"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="210dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"
+        />
 
     <TextView
         android:id="@+id/type2"
